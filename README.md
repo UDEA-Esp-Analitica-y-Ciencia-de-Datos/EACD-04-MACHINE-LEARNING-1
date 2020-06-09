@@ -1,4 +1,4 @@
-# Fundamentos de progamación para ciencia de datos
+# Aprendizaje automático I
 
 ## Descripción del curso
 
