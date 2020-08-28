@@ -1,22 +1,48 @@
-# Aprendizaje automático I
+# 20201 Aprendizaje automático I
+
+## Especialización en Analítica y Ciencia de Datos
+## Facultad de Ingeniería
+## Universidad de Antioquia
 
 ## Descripción del curso
 
-## Programación de sesiones
-
-**SESIÓN 01** (6hrs): Temas ...
-
-**SESIÓN 02** (4hrs): Temas ...
-
-etc.
-
-## Criterios de evaluación
-
-- **xx%**: TALLERES, cada taller del curso valdrá lo mismo (o distinto, etc.)
-- **yy%**: INFORME de XXXX
+## Programación
+                        
+        **Fecha**   **Sesión**   **Duración**    **Temas**    
+        ------------------------------------------------------
+        06/nov    01     4h      U1. Intro.ML. [TALLER] Script Básico     
+        07/nov    02     3h      U1. Reg.Lineal.Logística.
+        07/nov    03     3h      U1. Métricas. [TALLER] Simulación completa dataset real.
+        13/nov    04     4h      U2. Param.vs.NoParam. [TALLER] Knn vs Gaussian. Fronteras.     
+        14/nov    05     3h      U2. Complej.Modelos-Metod.Validación.
+        14/nov    06     3h      U2. Regularización. [TALLER] Metodologías de Validación.
+        20/nov    07     4h      U3. CART.Bagging.RF.Voting      
+        21/nov    08     3h      U3. SVM.SVR. 
+        21/nov    09     3h      U3. Estra.Multiclase.OVA.AVA. [TALLER] comparación de modelos de la semana
+        27/nov    10     4h      U4. Boosting.AdaBoost.GBT.Stacking    
+        28/nov    11     3h      U4. Selección.Características.SHAP values.
+        28/nov    12     3h      U4. [TALLER] Aplicación de las técnicas del módulo
+        
+    
+## Evaluación
+ 
+     25% TALLER 1 y 2
+     25% TALLER 3 y 4
+     25% TALLER 5
+     25% TALLER 6
 
 ## Entregas
 
 Las entregas del curso (informes, notebooks, etc.) se realizarán en el Drive compartido con cada estudiante.
 
-La fecha límite de entrega será el **2020/XX/XX a las 11pm hora colombiana**
+La fecha límite de entrega para los Talleres 1 a 4 será el **19 de noviembre** y para los Talleres 5 y 6 será el **3 de noviembre**, en ambos casos hasta las 11:59 p.m.
+
+## Lecturas recomendadas
+
+- Hastie, Tibshirani, Friedman, **The Elements of Statistical Learning**, Springer-Verlag [website](https://web.stanford.edu/~hastie/ElemStatLearn/) [pdf](https://web.stanford.edu/~hastie/ElemStatLearn/printings/ESLII_print12.pdf)
+
+- C. Bishop, **Pattern Recognition and Machine Learning**, Springer-Verlag [website](http://users.isr.ist.utl.pt/~wurmd/Livros/school/Bishop%20-%20Pattern%20Recognition%20And%20Machine%20Learning%20-%20Springer%20%202006.pdf)
+
+- K. Murphy, **Machine Learning A Probabilistic Perspective**, MIT Press
+
+- S. Theodoridis, **Machine Learning a Bayesian and optimization Perspective**, Academic Press.
