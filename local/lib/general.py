@@ -49,7 +49,7 @@ class Laboratory():
         print("installing libraries")
         self.install_libraries()
         print("downloading files")
-        self.download_files()
+        #self.download_files()
         print("lab configured")
 
 class Grader():

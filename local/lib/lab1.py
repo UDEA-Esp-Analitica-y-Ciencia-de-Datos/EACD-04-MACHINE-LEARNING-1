@@ -10,7 +10,19 @@ Este archivo es generado automaticamente.
 
 ###### NO MODIFICAR #########
 """
-from imports import *
+from local.lib.imports import *
+
+def normalizar(Xtrain):
+    """ función que se usa para normalizar los datos con
+    un metodo especifico
+    Xtrain: matriz de datos entrenamiento a normalizar
+    Xtest: matriz de datos evaluación a normalizar
+    retorna: matrices normalizadas
+    """
+    scaler = StandardScaler().fit(Xtrain)
+    Xtrain_n = scaler.transform(Xtrain)
+
+    return Xtrain_n, scaler
 
 def potenciaPolinomio(X,grado):
     """calcula la potencia del polinomio
@@ -26,16 +38,23 @@ def potenciaPolinomio(X,grado):
     
     return X2
 
+def MatrizExtendida(X):
+    # par obtener el numero muestras y caractersiticas
+    muestras,carac = X.shape
+    unos = np.array([np.ones(muestras)])
+    x_ext = np.concatenate((unos.T, X), axis=1)
+    x_ext = x_ext.reshape(muestras, carac+1)
+    return x_ext
 
 def genarete_data():
-    db = np.loadtxt('AirQuality.data',delimiter='\t') 
+    db = np.loadtxt('local/data/AirQuality.data',delimiter='\t') 
     xtrain = np.random.rand(100,3)
     ytrain = np.ones(shape = (100,1))
     x = db[0:100,0:4]
     y = db[0:100, 12]
-    wr1 = np.zeros((1,x.shape[1]))
+    wr1 = np.zeros((1,x.shape[1]+1))
     wr1 = wr1.reshape(np.size(wr1), 1)
-    wr2 = np.random.rand(1,xtrain.shape[1])
+    wr2 = np.random.rand(1,xtrain.shape[1]+1)
     wr2 = wr2.reshape(np.size(wr2), 1)
 
     return(xtrain, x, ytrain, y, wr1, wr2)
@@ -54,13 +73,14 @@ def test_ejercicio_1(func):
 @unknow_error
 def test_ejercicio_2(func):
     xtrain1, x, ytrain, y, wr1, _ = genarete_data()
-    def ww (w):
+    def ww (w,x):
+        x = MatrizExtendida(x)
         some = (np.sum(x*(np.dot(x,w) - y.reshape((x.shape[0],1))), axis = 0, keepdims = True)/((x.shape[0]))) .T
         return (w-0.001*some)
-    wr1= ww(wr1)
-    wr1= ww(wr1)
+    wr1= ww(wr1,x)
+    wr1= ww(wr1,x)
     w1 = func(x, y, 0.001, 2)
-    w2 = func(xtrain1, ytrain, 0.001, 2)
+    w2 = func(xtrain1[:,1:], ytrain, 0.001, 2)
     tests = {'revisa tu implementacion. \n Sigue la instrucciones ten cuidado con las dimensiones de la matrices. \n evita dejar codigo estatico ': 
               ut.are_np_equal(w1,wr1),
              'Recuerda que la funcion debe recibir parametros, evita dejar codigo estatico':  w2.shape == (xtrain1.shape[1],1) }
@@ -70,14 +90,15 @@ def test_ejercicio_2(func):
 @unknow_error
 def test_ejercicio_3(func):
     xtrain1, x, ytrain, y, wr1, wr2 = genarete_data()
-    est = np.dot(x,wr1)
+    
+    est = np.dot(x,wr1[1:,0])
     te = np.sum((est.reshape(y.shape[0],1) - y.reshape(y.shape[0],1))**2)/(y.shape[0])
 
-    est2 = np.dot(xtrain1,wr2)
+    est2 = np.dot(xtrain1,wr2[1:,0])
     te2 = np.sum((est2.reshape(ytrain.shape[0],1) - ytrain.reshape(ytrain.shape[0],1))**2)/(ytrain.shape[0])
 
-    error = func(wr1, X_to_test = x,  Y_True = y)
-    error2 = func(wr2, X_to_test = xtrain1,  Y_True = ytrain)
+    error = func(wr1[1:,0], X_to_test = x,  Y_True = y)
+    error2 = func(wr2[1:,0], X_to_test = xtrain1,  Y_True = ytrain)
 
     tests = {'revisa tu implementacion. \n Sigue las instrucciones. \n evita dejar codigo estatico ': te == error,
              'Recuerda que la funcion debe recibir parametros, evita dejar codigo estatico':  te2 == error2 }
@@ -89,12 +110,14 @@ def test_ejercicio_3(func):
 def test_ejercicio_4(func):
     xtrain1, x, ytrain, y, _, _ = genarete_data()
     x_g2 = potenciaPolinomio(x, 3)
+    x_g2_E = MatrizExtendida(x_g2)
     xtrain_g2 = potenciaPolinomio(xtrain1,3)
-    wr1 = np.zeros((1,x_g2.shape[1]))
+    xtrain_g2_E = MatrizExtendida(xtrain_g2)
+    wr1 = np.zeros((1,x_g2_E.shape[1]))
     wr1 = wr1.reshape(np.size(wr1), 1)
 
     def ww (w):
-        some = (np.sum(x_g2*(np.dot(x_g2,w) - y.reshape((x.shape[0],1))), axis = 0, keepdims = True)/((x_g2.shape[0]))) .T
+        some = (np.sum(x_g2_E*(np.dot(x_g2_E,w) - y.reshape((x.shape[0],1))), axis = 0, keepdims = True)/((x_g2_E.shape[0]))) .T
         return (w-0.001*some)
     wr1= ww(wr1)
     wr1= ww(wr1)
@@ -102,7 +125,7 @@ def test_ejercicio_4(func):
     w2 = func(xtrain1, ytrain, 0.001, 2,3)
     tests = {'revisa tu implementacion. \n Sigue la instrucciones ten cuidado con las dimensiones de la matrices. \n evita dejar codigo estatico ': 
               ut.are_np_equal(w1,wr1),
-             'Recuerda que la funcion debe recibir parametros, evita dejar codigo estatico':  w2.shape == (xtrain_g2.shape[1],1) }
+             'Recuerda que la funcion debe recibir parametros, evita dejar codigo estatico':  w2.shape == (xtrain_g2_E.shape[1],1) }
     test_res = ut.test_conditions_and_methods(tests)
     return (test_res)
 
@@ -111,17 +134,19 @@ def test_ejercicio_4(func):
 def test_ejercicio_5(func):
     xtrain1, x, ytrain, y, _, _ = genarete_data()
     x_g = potenciaPolinomio(x, 3)
+    x_g_E = MatrizExtendida(x_g)
     xtrain_g = potenciaPolinomio(xtrain1,3)
-    wr1 = np.zeros((1,x_g.shape[1]))
+    xtrain_g_E = MatrizExtendida(xtrain_g)
+    wr1 = np.zeros((1,x_g_E.shape[1]))
     wr1 = wr1.reshape(np.size(wr1), 1)
 
-    wr2 = np.zeros((1,xtrain_g.shape[1]))
+    wr2 = np.zeros((1,xtrain_g_E.shape[1]))
     wr2 = wr2.reshape(np.size(wr2), 1)
 
-    est = np.dot(x_g,wr1)
+    est = np.dot(x_g_E,wr1)
     te = np.sum((est.reshape(y.shape[0],1) - y.reshape(y.shape[0],1))**2)/(y.shape[0])
 
-    est2 = np.dot(xtrain_g,wr2)
+    est2 = np.dot(xtrain_g_E,wr2)
     te2 = np.sum((est2.reshape(ytrain.shape[0],1) - ytrain.reshape(ytrain.shape[0],1))**2)/(ytrain.shape[0])
 
     error = func(wr1, X_to_test = x,  Y_True = y, grado = 3)
@@ -162,21 +187,21 @@ def test_exp2(func):
 def part_1():
     print("cargando librerias y variables al ambiente")
     GRADER_LAB_1_P1 = Grader("lab1_part1")
-    GRADER_LAB_1_P1.add_test("ejercicio1", Tester(test_ejercicio_1))
-    GRADER_LAB_1_P1.add_test("ejercicio2", Tester(test_ejercicio_2))
-    GRADER_LAB_1_P1.add_test("ejercicio3", Tester(test_ejercicio_3))
-    GRADER_LAB_1_P1.add_test("ejercicio4",  Tester(test_ejercicio_4))
-    GRADER_LAB_1_P1.add_test("ejercicio5", Tester(test_ejercicio_5))
-    GRADER_LAB_1_P1.add_test("ejercicio6", Tester(test_exp1))
-    GRADER_LAB_1_P1.add_test("ejercicio7", Tester(test_exp2))
-    db = np.loadtxt('AirQuality.data',delimiter='\t') 
+    GRADER_LAB_1_P1.add_test("ejercicio1.1", Tester(test_ejercicio_1))
+    GRADER_LAB_1_P1.add_test("ejercicio1.2", Tester(test_ejercicio_2))
+    GRADER_LAB_1_P1.add_test("ejercicio1.3", Tester(test_ejercicio_3))
+    GRADER_LAB_1_P1.add_test("ejercicio1.4",  Tester(test_ejercicio_4))
+    GRADER_LAB_1_P1.add_test("ejercicio1.5", Tester(test_ejercicio_5))
+    GRADER_LAB_1_P1.add_test("ejercicio1.6", Tester(test_exp1))
+    GRADER_LAB_1_P1.add_test("ejercicio1.7", Tester(test_exp2))
+    db = np.loadtxt('local/data/AirQuality.data',delimiter='\t') 
     x = db[:,0:12]
     y = db[:,12]
     return (GRADER_LAB_1_P1, db, x, y)
 
 # parte 2
 def genarete_data2():
-    mat = scipy.io.loadmat('DatosClases.mat')
+    mat = scipy.io.loadmat('local/data/DatosClases.mat')
     x = mat['X'] # Matriz X de muestras con las características
     y = mat['Y'] # Variable de salida
     xtrain = np.random.rand(100,2)
@@ -236,35 +261,37 @@ def logistic_regression(X, W):
     Yest = np.dot(X,W)
     Y_lest = 1/(1 + np.exp(-Yest))
     #Se asignan los valores a 1 o 0 según el modelo de regresión logística definido
-    pos = 0
-    for tag in Y_lest:
-        
-        if tag > 0.5:
-            Y_lest[pos] = 1
-        elif tag < 0.5:
-            Y_lest[pos] = 0
-        
-        pos += 1
-    
+       
     return Y_lest    #Y estimado: Esta variable contiene ya tiene la salida de sigm(f(X,W))
 
 @unknow_error
 def test_gradiente_descendente_logistic_poly(func):
-    xtrain, x, ytrain, y, wr1, wr2 = genarete_data2()
+    _, x, _, y, _, _ = genarete_data2()
     x_g = potenciaPolinomio(x,3)
+    x_g,_ = normalizar(x_g)
+    x_g= MatrizExtendida(x_g)
     wr2 = np.zeros((1,x_g.shape[1]))
     wr2 = wr2.reshape(np.size(wr2), 1)
-   
+    
+    error,_ = func(x,y,1,0.01, 2)
+    error2,_ = func(x,y,3,0.01, 2)
+
+    x,_ = normalizar(x)
+    x = MatrizExtendida(x)
+
+    wr1 = np.zeros((1,x.shape[1]))
+    wr1 = wr1.reshape(np.size(wr1), 1)
+
     wr1 = wr1-0.01*(np.dot(x.T, logistic_regression(x,wr1) - y))/x.shape[0]
     wr1 = wr1-0.01*(np.dot(x.T, logistic_regression(x,wr1) - y))/x.shape[0]
-    error = func(x,y,1,0.01, 2)
+    
     t1 = ut.are_np_equal(wr1, error)
 
     wr2 = wr2-0.01*(np.dot(x_g.T, logistic_regression(x_g,wr2) - y))/x_g.shape[0]
     wr2 = wr2-0.01*(np.dot(x_g.T, logistic_regression(x_g,wr2) - y))/x_g.shape[0]
-
+    
     tests = {'revisa tu implementacion, el test 1 fallo ': t1,
-             'revisa tu implementacion, el test 2 fallo':  ut.are_np_equal(wr2, func(x,y,3,0.01, 2)) }
+             'revisa tu implementacion, el test 2 fallo':  ut.are_np_equal(wr2, error2) }
     test_res = ut.test_conditions_and_methods(tests)
 
     return (test_res)
@@ -304,31 +331,31 @@ def test_numero_de_errores(func):
 def part_2():
     print("cargando librerias y variables al ambiente")
     GRADER = Grader("lab1_part2")
-    GRADER.add_test("ejercicio1", Tester(test_ejercicio_1_p2))
-    GRADER.add_test("ejercicio2", Tester(test_ejercicio_2_p2))
-    GRADER.add_test("ejercicio3", Tester(test_sigmoide))
-    GRADER.add_test("ejercicio4", Tester(test_gradiente_descendente_logistic_poly))
-    GRADER.add_test("ejercicio5",  Tester(test_exp1_part2))
-    GRADER.add_test("ejercicio6", Tester(test_numero_de_errores))
+    GRADER.add_test("ejercicio2.1", Tester(test_ejercicio_1_p2))
+    #GRADER.add_test("ejercicio2.2", Tester(test_ejercicio_2_p2))
+    GRADER.add_test("ejercicio2.3", Tester(test_sigmoide))
+    GRADER.add_test("ejercicio2.4", Tester(test_gradiente_descendente_logistic_poly))
+    GRADER.add_test("ejercicio2.5",  Tester(test_exp1_part2))
+    #GRADER.add_test("ejercicio2.6", Tester(test_numero_de_errores))
     #GRADER.add_test("ejercicio6", Tester(test_exp1))
     #GRADER.add_test("ejercicio7", Tester(test_exp2))
-    mat = scipy.io.loadmat('DatosClases.mat')
+    mat = scipy.io.loadmat('local/data/DatosClases.mat')
     x = mat['X'] # Matriz X de muestras con las características
     y = mat['Y'] # Variable de salida
     return (GRADER, x, y)
 
-def normalizar(Xtrain, Xtest):
-    """ función que se usa para normalizar los datos con
-    un metodo especifico
-    Xtrain: matriz de datos entrenamiento a normalizar
-    Xtest: matriz de datos evaluación a normalizar
-    retorna: matrices normalizadas
-    """
-    media = np.mean(Xtrain, axis = 0)
-    desvia = np.std(Xtrain, axis = 0)
-    Xtrain_n = stats.stats.zscore(Xtrain)
-    Xtest_n = (Xtest - media )/desvia
-    # si hay una desviacion por cero, reemplazamos los nan
-    Xtrain_n = np.nan_to_num(Xtrain_n)
-    Xtest_n = np.nan_to_num(Xtest_n)
-    return (Xtrain_n, Xtest_n)
+#def normalizar(Xtrain, Xtest):
+#    """ función que se usa para normalizar los datos con
+#    un metodo especifico
+#    Xtrain: matriz de datos entrenamiento a normalizar
+#    Xtest: matriz de datos evaluación a normalizar
+#    retorna: matrices normalizadas
+#    """
+#    media = np.mean(Xtrain, axis = 0)
+#    desvia = np.std(Xtrain, axis = 0)
+#    Xtrain_n = stats.stats.zscore(Xtrain)
+#    Xtest_n = (Xtest - media )/desvia
+#    # si hay una desviacion por cero, reemplazamos los nan
+#    Xtrain_n = np.nan_to_num(Xtrain_n)
+#    Xtest_n = np.nan_to_num(Xtest_n)
+#    return (Xtrain_n, Xtest_n)
