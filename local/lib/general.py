@@ -27,13 +27,13 @@ class Laboratory():
         self.data_path = [f"data/{data}" for data in data_paths]
         self.code_path = code_paths
         self.commons = ['imports.py']
-        self.repo_path = "https://raw.githubusercontent.com/jdariasl/ML_2020/master/Labs/commons/utils/"
+        self.repo_path = "https://raw.githubusercontent.com/UDEA-Esp-Analitica-y-Ciencia-de-Datos/EACD-04-MACHINE-LEARNING-1/local/"
         print("lab configuration started")
 
 
     def download_github_code(self, path):
         filename = path.rsplit("/")[-1]
-        os.system(f"wget {self.repo_path}{path} -O {filename}")
+        os.system(f"wget {self.repo_path+'lib/'}{path} -O {filename}")
 
     def download_files(self):
         for d in self.data_path + self.code_path+ self.commons:
