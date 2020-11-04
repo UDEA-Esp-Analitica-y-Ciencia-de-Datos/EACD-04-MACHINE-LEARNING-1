@@ -47,7 +47,7 @@ class Laboratory():
 
     def configure(self):
         print("installing libraries")
-        self.install_libraries()
+        #self.install_libraries()
         print("downloading files")
         #self.download_files()
         print("lab configured")
