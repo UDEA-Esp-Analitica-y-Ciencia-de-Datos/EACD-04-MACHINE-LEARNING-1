@@ -150,8 +150,8 @@ class Utils():
                 "parace ser que no creaste una funcion," , 
                 "presta atención a las instrucciones, o pregunta al profesor")
         return (res)
-        
-    def mi_scaler():
+
+    class mi_scaler():
         def __init__(self):
             self.media= []
             self.desvia = []
