@@ -24,6 +24,21 @@ def normalizar(Xtrain):
 
     return Xtrain_n, scaler
 
+def mi_scaler():
+        def __init__(self):
+            self.media= []
+            self.desvia = []
+        def fit(self,X):
+            self.media = np.mean(X, axis=0)
+            self.desvia = np.std(X, axis=0)
+            return self
+        def transform(self,X):
+            if not self.media:
+                raise ValueError('Primero ajuste los parámetros del escaler con el método fit')
+            else:
+                X = (X-self.media)/self.desvia
+                return X
+
 def potenciaPolinomio(X,grado):
     """calcula la potencia del polinomio
     X: los valores que corresponden a las caractersiticas
