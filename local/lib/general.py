@@ -150,6 +150,21 @@ class Utils():
                 "parace ser que no creaste una funcion," , 
                 "presta atención a las instrucciones, o pregunta al profesor")
         return (res)
+        
+    def mi_scaler():
+        def __init__(self):
+            self.media= []
+            self.desvia = []
+        def fit(self,X):
+            self.media = np.mean(X, axis=0)
+            self.desvia = np.std(X, axis=0)
+            return self
+        def transform(self,X):
+            if not self.media:
+                raise ValueError('Primero ajuste los parámetros del escaler con el método fit')
+            else:
+                X = (X-self.media)/self.desvia
+                return X
 
     def is_dataframe_tester(self, df):
         test = isinstance(df, pd.DataFrame)
