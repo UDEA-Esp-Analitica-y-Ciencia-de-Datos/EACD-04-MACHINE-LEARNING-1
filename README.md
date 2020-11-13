@@ -27,16 +27,16 @@ Universidad de Antioquia
     
 ## Evaluación
  
-     25% TALLER 1 y 2
-     25% TALLER 3 y 4
-     25% TALLER 5
-     25% TALLER 6
+     25% TALLER 4 y 7
+     25% TALLER 9 y 13
+     25% TALLER 15
+     25% TALLER 19
 
 ## Entregas
 
 Las entregas del curso (informes, notebooks, etc.) se realizarán en el Drive compartido con cada estudiante.
 
-La fecha límite de entrega para los Talleres 1 a 4 será el **19 de noviembre** y para los Talleres 5 y 6 será el **3 de noviembre**, en ambos casos hasta las 11:59 p.m.
+La fecha límite de entrega para los Talleres 1 a 4 será el **19 de noviembre** y para los Talleres 5 y 6 será el **3 de diciembre**, en ambos casos hasta las 11:59 p.m.
 
 ## Lecturas recomendadas
 
