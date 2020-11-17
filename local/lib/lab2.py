@@ -23,7 +23,7 @@ def test_muestras_por_clases(func):
     five = func( np.array([10,20,30,40,50]))
 
     tests = {'recuerda retornar un diccionario': isinstance(ones, dict) and isinstance(five, dict),
-             'el numero de clases es equivalente a a los valores unicos en Y': len(ones) == 1 and len(five) == 5,
+             'el numero de clases es equivalente a los valores unicos en Y': len(ones) == 1 and len(five) == 5,
              'recuerda que las claves deben ser las etiquetas': list(ones.keys()) == [1] and list(five.keys()) == [10,20,30,40,50]
              }
     test_res = ut.test_conditions_and_methods(tests)
