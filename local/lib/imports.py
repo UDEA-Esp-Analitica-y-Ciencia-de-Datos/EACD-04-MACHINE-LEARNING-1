@@ -14,6 +14,7 @@ Este archivo es generado automaticamente.
 
 import numpy as np
 from sklearn.preprocessing import StandardScaler
+from sklearn.impute import SimpleImputer
 import matplotlib.pyplot as plt
 import pandas as pd
 from local.lib.general import Tester, Grader, Utils, unknow_error

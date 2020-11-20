@@ -47,7 +47,7 @@ class Laboratory():
 
     def configure(self):
         print("installing libraries")
-        self.install_libraries()
+        #self.install_libraries()
         print("downloading files")
         #self.download_files()
         print("lab configured")
@@ -381,6 +381,12 @@ def configure_lab3():
 def configure_lab4():
     data = ["AirQuality.data"]
     code = ["lab4.py"]
+    intro_lab_object = Laboratory(data, code)
+    intro_lab_object.configure()
+
+def configure_lab5_2():
+    data = ["AirQuality.data"]
+    code = ["lab5.py"]
     intro_lab_object = Laboratory(data, code)
     intro_lab_object.configure()
 
