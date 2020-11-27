@@ -14,6 +14,7 @@ import matplotlib.pyplot as plt
 from matplotlib import cm
 from sklearn.preprocessing import StandardScaler
 from sklearn.neighbors import KNeighborsRegressor
+from sklearn.svm import SVR
 
 df = pd.read_csv("local/data/housing.data",delim_whitespace=True, header=None, names=['CRIM','ZN','INDUS','CHAS','NOX','RM','AGE','DIS','RAD','TAX','PTRATIO','B','LSTAT','MEDV'])
 
@@ -321,6 +322,38 @@ def ParzenPlot_n(h):
     surf = ax.plot_surface(x1, x2, Z, cmap=cm.coolwarm, linewidth=0, antialiased=False)
     ax.scatter3D(xdata, ydata, zdata, cmap='Greens');
     ax.set_title('Parzen Window Regression function, h = {}'.format(h))
+    ax.set_xlabel("Edad")
+    ax.set_ylabel("Tasa de impuesto")
+    ax.set_zlabel("HPI x10^3")
+    return ax
+
+def SVRPlot_n(C,gamma):
+    zdata = output[0:100].values
+    xdata = data['AGE'].iloc[0:100,].values
+    ydata = data['TAX'].iloc[0:100,].values*1000000
+    X = np.c_[xdata.reshape(100,1),ydata.reshape(100,1)]
+    scaler = StandardScaler()
+    Xn = scaler.fit_transform(X)
+
+    clf = SVR(kernel='rbf',gamma=gamma,C=C).fit(Xn,zdata.flatten())
+
+    x1 = np.linspace(np.min(xdata), np.max(xdata), num=100)
+    x2 = np.linspace(np.min(ydata), np.max(ydata), num=100)
+    x1, x2 = np.meshgrid(x1, x2)
+    n1,n2 = x1.shape
+    Z = np.zeros([n1,n2])
+
+    for i in range(n1):
+        for j in range(n2):
+            xval = np.array([x1[i,j],x2[i,j]]).reshape(1,2)
+            xvaln = scaler.transform(xval)
+            Z[i,j] = clf.predict(xvaln)
+    fig = plt.figure(figsize=(10,10))
+    ax = fig.gca(projection='3d')
+    # Plot the surface.
+    surf = ax.plot_surface(x1, x2, Z, cmap=cm.coolwarm, linewidth=0, antialiased=False)
+    ax.scatter3D(xdata, ydata, zdata, cmap='Greens');
+    ax.set_title('Support Vector Regression function')
     ax.set_xlabel("Edad")
     ax.set_ylabel("Tasa de impuesto")
     ax.set_zlabel("HPI x10^3")
