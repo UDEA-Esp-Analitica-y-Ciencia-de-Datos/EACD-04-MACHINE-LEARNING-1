@@ -13,6 +13,7 @@ Este archivo es generado automaticamente.
 
 from local.lib.imports import *
 from sklearn.metrics import mean_absolute_error, accuracy_score, mean_squared_error
+from sklearn.metrics import zero_one_loss
 from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.model_selection import StratifiedKFold, train_test_split, KFold, ShuffleSplit
