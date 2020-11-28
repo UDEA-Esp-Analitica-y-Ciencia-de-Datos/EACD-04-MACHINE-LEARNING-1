@@ -210,8 +210,7 @@ def experiementarSVC(func):
                                     return_df = True)
     
     code_to_look = ['StratifiedKFold', 'kernel=kernel', 'gamma=gamma', 'C=param_reg', 'SVC',
-                    'StandardScaler()', '.fit(X=X_train', 
-                    '.predict(X=X_test',  '.predict(X=X_train',
+                    'StandardScaler()', 
                     '.support_', 'accuracy_score'] 
     res2 = ut.check_code(code_to_look, func, debug = False)
 
