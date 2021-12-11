@@ -169,7 +169,7 @@ def experiementarSVR(func):
     
     code_to_look = ['KFold', 'kernel=kernel', 'gamma=gamma', 'C=param_reg', 'SVR',
                     'StandardScaler()', 
-                    '.support_', 'mean_squared_error'] 
+                    'support_', 'mean_squared_error'] 
     res2 = ut.check_code(code_to_look, func, debug = False)
 
     cond =( (df_r['% de vectores de soporte'].max() > 100.0) or 
@@ -212,7 +212,7 @@ def experiementarSVC(func):
     
     code_to_look = ['StratifiedKFold', 'kernel=kernel', 'gamma=gamma', 'C=param_reg', 'SVC',
                     'StandardScaler()', 
-                    '.support_', 'accuracy_score'] 
+                    'support_', 'accuracy_score'] 
     res2 = ut.check_code(code_to_look, func, debug = False)
 
     cond =( (df_r['% de vectores de soporte'].max() > 100.0) or 
